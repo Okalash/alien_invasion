@@ -2,6 +2,7 @@ import sys
 import pygame
 from settings import Settings
 from ship import Ship
+from bullet import Bullet
 
 
 # class to resource and behaviour of game
@@ -24,6 +25,7 @@ class AlienInvasion:
 
         pygame.display.set_caption('Alien Invasion')
         self.ship = Ship(self)
+        self.bullets = pygame.sprite.Group()
 
     #  start game
     def run_game(self):
@@ -31,6 +33,10 @@ class AlienInvasion:
             self._check_events()
             self._update_screen()
             self.ship.update()
+            self.bullets.update()
+            self._update_bullets()
+
+
 
     # wait react for mouse or keyboard
     def _check_events(self):
@@ -51,6 +57,9 @@ class AlienInvasion:
         # if turn ESCAPE - game off
         if event.key == pygame.K_ESCAPE:
             sys.exit()
+        # shot
+        if event.key == pygame.K_SPACE:
+            self._fire_bullet()
 
     # reaction to unpressed key
     def _chech_keyup_events(self, event):
@@ -59,11 +68,28 @@ class AlienInvasion:
         if event.key == pygame.K_LEFT:
             self.ship.moving_left = False
 
+
+    def _update_bullets(self):
+        self.bullets.update()
+        # delete old bullet
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
+
     # redraw screen
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)  # new color by settings
         self.ship.blitme()
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
         pygame.display.flip()  # draw last screen (update field of fire)
+
+
+    # new bullet and add to group bullets
+    def _fire_bullet(self):
+        if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
 
 
 # run if file called directly

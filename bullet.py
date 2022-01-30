@@ -12,7 +12,7 @@ class Bullet(Sprite):
         self.color = self.settings.bullet_color
 
         # create rectangle bullet from (0,0) to middle position
-        self.rect = pygame.Rect(0, 0, self.settings.bullet_width, self.settings.screen_height)  # build bullet
+        self.rect = pygame.Rect(0, 0, self.settings.bullet_width, self.settings.bullet_height)  # build bullet
         self.rect.midtop = ai_game.ship.rect.midtop
 
         # save the position of bullet as float value
