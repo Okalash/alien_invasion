@@ -38,6 +38,7 @@ class AlienInvasion:
                     self.ship.moving_right = False
                 if event.key == pygame.K_LEFT:
                     self.ship.moving_left = False
+
     # redraw screen
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)  # new color by settings
@@ -45,6 +46,7 @@ class AlienInvasion:
         pygame.display.flip()  # draw last screen (update field of fire)
 
 
-if __name__ == '__main__':  # run if file called directly
+# run if file called directly
+if __name__ == '__main__':
     ai = AlienInvasion()
     ai.run_game()
