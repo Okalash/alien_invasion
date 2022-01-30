@@ -12,7 +12,7 @@ class AlienInvasion:
         pygame.init()
         self.settings = Settings()  # init settings
 
-        # fullscreen
+        # fullscreen game mode
         if False:
             self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)  # set display size (surface)
             self.settings.screen_width = self.screen.get_rect().width
