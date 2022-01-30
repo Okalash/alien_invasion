@@ -25,9 +25,10 @@ class Ship:
 
     # update current location based on run indicator
     def update(self):
-        if self.moving_right:
+        # movement only in the screen area
+        if self.moving_right and self.rect.right < self.screen_rect.right:
             self.x += self.setting.ship_speed
-        if self.moving_left:
+        if self.moving_left and self.rect.left > 0:
             self.x -= self.setting.ship_speed
 
         #  update rect from self.x

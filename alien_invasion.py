@@ -11,8 +11,17 @@ class AlienInvasion:
     def __init__(self):
         pygame.init()
         self.settings = Settings()  # init settings
-        self.screen = pygame.display.set_mode((self.settings.screen_width,
-                                               self.settings.screen_height))  # set display size (surface)
+
+        # fullscreen
+        if False:
+            self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)  # set display size (surface)
+            self.settings.screen_width = self.screen.get_rect().width
+            self.settings.screen_height = self.screen.get_rect().height
+
+        # screen size from settings
+        if True:
+            self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
+
         pygame.display.set_caption('Alien Invasion')
         self.ship = Ship(self)
 
@@ -26,18 +35,29 @@ class AlienInvasion:
     # wait react for mouse or keyboard
     def _check_events(self):
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:  # quit from game
+            if event.type == pygame.QUIT :  # quit from game
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
-                    self.ship.moving_right = True
-                if event.key == pygame.K_LEFT:
-                    self.ship.moving_left = True
+                self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_RIGHT:
-                    self.ship.moving_right = False
-                if event.key == pygame.K_LEFT:
-                    self.ship.moving_left = False
+                self._chech_keyup_events(event)
+
+    # reaction to pressed key
+    def _check_keydown_events(self, event):
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = True
+        if event.key == pygame.K_LEFT:
+            self.ship.moving_left = True
+        # if turn ESCAPE - game off
+        if event.key == pygame.K_ESCAPE:
+            sys.exit()
+
+    # reaction to unpressed key
+    def _chech_keyup_events(self, event):
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = False
+        if event.key == pygame.K_LEFT:
+            self.ship.moving_left = False
 
     # redraw screen
     def _update_screen(self):
