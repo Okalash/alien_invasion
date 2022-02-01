@@ -33,3 +33,8 @@ class Ship:
 
         #  update rect from self.x
         self.rect.x = self.x
+
+    # move ship to center
+    def center_ship(self):
+        self.rect.midbottom = self.screen_rect.midbottom
+        self.x = float(self.rect.x)

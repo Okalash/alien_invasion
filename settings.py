@@ -19,3 +19,5 @@ class Settings:
         self.alien_speed = 1.0
         self.fleet_drop_speed = 10  # speed to drop the fleet down
         self.fleet_direction = 1  # neg to left, pos to right
+
+        self.ship_limit = 3 # count of ships in game (like as life?)
