@@ -5,7 +5,6 @@ from ship import Ship
 from bullet import Bullet
 from alien import Alien
 
-
 # class to resource and behaviour of game
 class AlienInvasion:
 
@@ -77,6 +76,16 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
+        self._check_bullet_alien_collisions()
+
+    # check if bullet shot the one of alien
+    def _check_bullet_alien_collisions(self):
+        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+
+        # recreate aliens
+        if not self.aliens:
+            self.bullets.empty()
+            self._create_fleet()
 
     # redraw screen
     def _update_screen(self):
@@ -122,6 +131,9 @@ class AlienInvasion:
     def _update_aliens(self):
         self.aliens.update()
         self._check_fleet_edges()
+
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            sys.exit()
 
     # check aliens on edge of screen
     def _check_fleet_edges(self):
