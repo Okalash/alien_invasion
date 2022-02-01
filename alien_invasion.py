@@ -38,6 +38,7 @@ class AlienInvasion:
             self._update_screen()
             self.ship.update()
             self.bullets.update()
+            self._update_aliens()
             self._update_bullets()
 
     # wait react for mouse or keyboard
@@ -48,7 +49,7 @@ class AlienInvasion:
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
-                self._chech_keyup_events(event)
+                self._check_keyup_events(event)
 
     # reaction to pressed key
     def _check_keydown_events(self, event):
@@ -64,7 +65,7 @@ class AlienInvasion:
             self._fire_bullet()
 
     # reaction to unpressed key
-    def _chech_keyup_events(self, event):
+    def _check_keyup_events(self, event):
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = False
         if event.key == pygame.K_LEFT:
@@ -118,6 +119,22 @@ class AlienInvasion:
         alien.rect.y = alien.rect.height + 2 * alien_height * row_number
         self.aliens.add(alien)
 
+    def _update_aliens(self):
+        self.aliens.update()
+        self._check_fleet_edges()
+
+    # check aliens on edge of screen
+    def _check_fleet_edges(self):
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+
+    # change fleet fly direction
+    def _change_fleet_direction(self):
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.fleet_drop_speed
+        self.settings.fleet_direction *= -1
 
 
 # run if file called directly

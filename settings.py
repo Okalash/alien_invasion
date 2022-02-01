@@ -14,3 +14,8 @@ class Settings:
         self.bullet_height = 15
         self.bullet_color = (60, 60, 60)
         self.bullets_allowed = 6  # limit bullets
+
+        # aliens settings
+        self.alien_speed = 1.0
+        self.fleet_drop_speed = 10  # speed to drop the fleet down
+        self.fleet_direction = 1  # neg to left, pos to right
