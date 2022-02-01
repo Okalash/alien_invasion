@@ -15,6 +15,8 @@ class AlienInvasion:
         pygame.init()
         self.settings = Settings()  # init settings
 
+        # game is active
+        self.game_active = True
         # fullscreen game mode
         if False:
             self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)  # set display size (surface)
@@ -39,10 +41,11 @@ class AlienInvasion:
         while True:
             self._check_events()
             self._update_screen()
-            self.ship.update()
-            self.bullets.update()
-            self._update_aliens()
-            self._update_bullets()
+            if self.game_active:
+                self.ship.update()
+                self.bullets.update()
+                self._update_aliens()
+                self._update_bullets()
 
     # wait react for mouse or keyboard
     def _check_events(self):
@@ -139,10 +142,18 @@ class AlienInvasion:
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
             self._ship_hit()
 
+        # if alien touch bottom of screen
+        self._check_aliens_bottom()
+
     # check if ship faced with alien
     def _ship_hit(self):
-        # minus one life
-        self.stats.ships_left -= 1
+        if self.stats.ships_left > 0:
+            # minus one life
+            self.stats.ships_left -= 1
+            #pause
+            sleep(1)
+        else:
+            self.game_active = False
 
         # reset aliens and bullets
         self.aliens.empty()
@@ -151,7 +162,6 @@ class AlienInvasion:
         # create new fleet
         self._create_fleet()
         self.ship.center_ship()
-
 
     # check aliens on edge of screen
     def _check_fleet_edges(self):
@@ -165,6 +175,15 @@ class AlienInvasion:
         for alien in self.aliens.sprites():
             alien.rect.y += self.settings.fleet_drop_speed
         self.settings.fleet_direction *= -1
+
+    # check if aliens touch the bottom of screen
+    def _check_aliens_bottom(self):
+        screen_rect = self.screen.get_rect()
+        for alien in self.aliens.sprites():
+            if alien.rect.bottom >= screen_rect.bottom:
+                # react as ship is hit
+                self._ship_hit()
+                break
 
 
 # run if file called directly
