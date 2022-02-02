@@ -6,6 +6,7 @@ from bullet import Bullet
 from alien import Alien
 from time import sleep
 from game_stats import GameStats
+from button import Button
 
 # class to resource and behaviour of game
 class AlienInvasion:
@@ -15,8 +16,8 @@ class AlienInvasion:
         pygame.init()
         self.settings = Settings()  # init settings
 
-        # game is active
-        self.game_active = True
+        # game is inactive
+        self.game_active = False
         # fullscreen game mode
         if False:
             self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)  # set display size (surface)
@@ -35,6 +36,7 @@ class AlienInvasion:
         self._create_fleet()
 
         self.stats = GameStats(self)
+        self.play_button = Button(self, 'Play')
 
     #  start game
     def run_game(self):
@@ -56,6 +58,9 @@ class AlienInvasion:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
 
     # reaction to pressed key
     def _check_keydown_events(self, event):
@@ -101,6 +106,8 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
+        if not self.game_active:
+            self.play_button.draw_button()
         pygame.display.flip()  # draw last screen (update field of fire)
 
     # new bullet and add to group bullets
@@ -150,7 +157,7 @@ class AlienInvasion:
         if self.stats.ships_left > 0:
             # minus one life
             self.stats.ships_left -= 1
-            #pause
+            # pause
             sleep(1)
         else:
             self.game_active = False
@@ -184,6 +191,10 @@ class AlienInvasion:
                 # react as ship is hit
                 self._ship_hit()
                 break
+
+    def _check_play_button(self, mouse_pos):
+        if self.play_button.rect.collidepoint(mouse_pos):
+            self.game_active = True
 
 
 # run if file called directly
