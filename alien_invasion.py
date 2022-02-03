@@ -102,6 +102,9 @@ class AlienInvasion:
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
+            print(self.settings.alien_speed)
+
 
     # redraw screen
     def _update_screen(self):
