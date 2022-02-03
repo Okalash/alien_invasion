@@ -41,6 +41,7 @@ class AlienInvasion:
     #  start game
     def run_game(self):
         while True:
+            print(self.settings.alien_speed)
             self._check_events()
             self._update_screen()
             if self.game_active:
@@ -78,7 +79,6 @@ class AlienInvasion:
         if event.key == pygame.K_p:
             self._start_game()
 
-
     # reaction to unpressed key
     def _check_keyup_events(self, event):
         if event.key == pygame.K_RIGHT:
@@ -103,8 +103,6 @@ class AlienInvasion:
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
-            print(self.settings.alien_speed)
-
 
     # redraw screen
     def _update_screen(self):
@@ -202,7 +200,8 @@ class AlienInvasion:
     def _check_play_button(self, mouse_pos):
         # start new game when mouse on button
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
-        if button_clicked:
+        if button_clicked and not self.game_active:
+            self.settings.initialize_dynamic_setting()
             self._start_game()
 
     def _start_game(self):
