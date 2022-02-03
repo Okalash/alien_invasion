@@ -74,6 +74,10 @@ class AlienInvasion:
         # shot
         if event.key == pygame.K_SPACE:
             self._fire_bullet()
+        # p - to start game
+        if event.key == pygame.K_p:
+            self._start_game()
+
 
     # reaction to unpressed key
     def _check_keyup_events(self, event):
@@ -193,8 +197,26 @@ class AlienInvasion:
                 break
 
     def _check_play_button(self, mouse_pos):
-        if self.play_button.rect.collidepoint(mouse_pos):
+        # start new game when mouse on button
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        if button_clicked:
+            self._start_game()
+
+    def _start_game(self):
+        if not self.game_active:
+            self.stats.reset_stats()
             self.game_active = True
+
+            # hide mouse cursor
+            pygame.mouse.set_visible(False)
+
+            # new bullets and aliens
+            self.bullets.empty()
+            self.aliens.empty()
+
+            # create new fleet and move ship to center
+            self._create_fleet()
+            self.ship.center_ship()
 
 
 # run if file called directly
