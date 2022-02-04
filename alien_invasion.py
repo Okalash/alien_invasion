@@ -41,7 +41,6 @@ class AlienInvasion:
     #  start game
     def run_game(self):
         while True:
-            print(self.settings.alien_speed)
             self._check_events()
             self._update_screen()
             if self.game_active:
