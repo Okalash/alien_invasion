@@ -7,6 +7,7 @@ from alien import Alien
 from time import sleep
 from game_stats import GameStats
 from button import Button
+from scoreboard import Scoreboard
 
 # class to resource and behaviour of game
 class AlienInvasion:
@@ -37,6 +38,8 @@ class AlienInvasion:
 
         self.stats = GameStats(self)
         self.play_button = Button(self, 'Play')
+
+        self.sb = Scoreboard(self)
 
     #  start game
     def run_game(self):
@@ -97,6 +100,10 @@ class AlienInvasion:
     def _check_bullet_alien_collisions(self):
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
+        # add points when alien shot
+        if collisions:
+            self.stats.score += self.settings.alien_points
+            self.sb.prep_score()
         # recreate aliens
         if not self.aliens:
             self.bullets.empty()
@@ -110,6 +117,9 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
+
+        # show score
+        self.sb.show_score()
         if not self.game_active:
             self.play_button.draw_button()
         pygame.display.flip()  # draw last screen (update field of fire)
