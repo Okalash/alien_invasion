@@ -19,7 +19,15 @@ class Settings:
 
         # game speed boost (aliens boost)
         self.speedup_scale = 1.1
+
+        # start points
+        self.alien_points = 50
+
+        # boost cost alien
+        self.score_scale = 1.5
         self.initialize_dynamic_setting()
+
+
 
     def initialize_dynamic_setting(self):
         # init the changes into game speed
@@ -28,8 +36,8 @@ class Settings:
         self.alien_speed = 1.0
         self.fleet_direction = 1  # neg to left, pos to right
 
-        # get points
-        self.alien_points = 50
+
+        self.alien_points = int(self.alien_points * self.score_scale)
 
     def increase_speed(self):
         self.ship_speed *= self.speedup_scale

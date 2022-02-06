@@ -102,8 +102,9 @@ class AlienInvasion:
 
         # add points when alien shot
         if collisions:
-            self.stats.score += self.settings.alien_points
-            self.sb.prep_score()
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
+        self.sb.prep_score()
         # recreate aliens
         if not self.aliens:
             self.bullets.empty()
@@ -217,6 +218,7 @@ class AlienInvasion:
         if not self.game_active:
             self.stats.reset_stats()
             self.game_active = True
+            self.sb.prep_score()
 
             # hide mouse cursor
             pygame.mouse.set_visible(False)
