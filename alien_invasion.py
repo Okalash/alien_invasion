@@ -104,12 +104,15 @@ class AlienInvasion:
         if collisions:
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens)
-        self.sb.prep_score()
+            self.sb.prep_score()
+            self.sb.check_high_score()
         # recreate aliens
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
+            self.stats.level += 1
+            self.sb.prep_level()
 
     # redraw screen
     def _update_screen(self):
@@ -219,6 +222,7 @@ class AlienInvasion:
             self.stats.reset_stats()
             self.game_active = True
             self.sb.prep_score()
+            self.sb.prep_level()
 
             # hide mouse cursor
             pygame.mouse.set_visible(False)
