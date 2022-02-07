@@ -175,6 +175,7 @@ class AlienInvasion:
         if self.stats.ships_left > 0:
             # minus one life
             self.stats.ships_left -= 1
+            self.sb.prep_ships()
             # pause
             sleep(1)
         else:
@@ -223,6 +224,7 @@ class AlienInvasion:
             self.game_active = True
             self.sb.prep_score()
             self.sb.prep_level()
+            self.sb.prep_ships()
 
             # hide mouse cursor
             pygame.mouse.set_visible(False)

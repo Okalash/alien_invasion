@@ -1,10 +1,11 @@
 import pygame
-
+from pygame.sprite import Sprite
 
 # class for control Ship
-class Ship:
+class Ship(Sprite):
 
     def __init__(self, ai_game):  # ai_game is instance AlienInvasion
+        super().__init__()
         self.screen = ai_game.screen  # load game screen
         self.screen_rect = ai_game.screen.get_rect()  # load game screen rectangle (for right location)
         self.setting = ai_game.settings
